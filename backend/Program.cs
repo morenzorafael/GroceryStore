@@ -1,9 +1,24 @@
-public class Program
+﻿using System;
+
+class Program
 {
-    public void ConfigureServices(IServiceCollection services)
+    static void Main(string[] args)
     {
-        services.AddControllers();
-        services.AddScoped<UserRepository>(provider => new UserRepository(Configuration.GetConnectionString("DefaultConnection")));
-        services.AddEndpointsApiExplorer();
+        string connectionString = "";
+
+        IProductRepository productRepository = new ProductRepository(connectionString);
+
+        IProductAccessor productAccessor = new ProductAccessor(productRepository);
+
+        Product product = productAccessor.GetProductById(1);
+
+        if (product != null)
+        {
+          Console.WriteLine($"Product: {product.Name}, Price: {product.Price}");
+        }
+        else
+        {
+          Console.WriteLine("Product not found.");
+        }
     }
 }
